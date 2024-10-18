@@ -1,16 +1,13 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useDispatch, useSelector } from '../../services/store'; // Убедитесь, что путь правильный
+import { RootState, AppDispatch, useDispatch, useSelector } from '../../services/store'; // Убедитесь, что путь правильный
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import {fetchIngredientsData, getIngredients} from '../../slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch(); 
-  useEffect(() => {
-    dispatch(fetchIngredientsData());
-  }, []);
+
   const ingredients = useSelector(getIngredients);
 
   /** TODO: взять переменные из стора */

@@ -21,6 +21,8 @@ const ingredientsSlice = createSlice({
     selectors: {
         loadingIngredients: (state) => state.loading,
         getIngredients: (state) => state.ingredients,
+
+        // getIngredientById: (state) => (id: string) => state.ingredients.find((ingredient) => ingredient._id === id),
         
       },
     extraReducers: (builder) => {
@@ -43,6 +45,8 @@ const ingredientsSlice = createSlice({
 
 export const {loadingIngredients, getIngredients } = ingredientsSlice.selectors
 export const { } = ingredientsSlice.actions
+export const getIngredientById = (state: TIngredientsState, id: string) =>
+  state.ingredients.find((ingredient) => ingredient._id === id);
 export const ingredientsReducer = ingredientsSlice.reducer;
 
 export const fetchIngredientsData = createAsyncThunk<TIngredient[]>(
