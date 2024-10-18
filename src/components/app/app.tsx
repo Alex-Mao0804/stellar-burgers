@@ -11,12 +11,23 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
+import { useDispatch, useSelector } from '../../services/store';
+import { useEffect } from 'react';
+import { fetchIngredientsData } from '../../slices/ingredientsSlice';
+import { getUser } from '../../slices/userSlice';
 
-const App = () => (
+const App = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); 
+  useEffect(() => {
+    dispatch(fetchIngredientsData());
+  }, []);
+
+  return (
   <div className={styles.app}>
     <AppHeader />
     <Routes>
@@ -27,8 +38,7 @@ const App = () => (
         <Route
           path=':number'
           element={
-            <Modal title={''} onClose={() => {}}>
-              {' '}
+            <Modal title={'Заказ'} onClose={() => navigate(-1)}>
               <OrderInfo />
             </Modal>
           }
@@ -86,16 +96,17 @@ const App = () => (
         <Route
           path='orders/:number'
           element={
-            <Modal title={''} onClose={() => {}}>
+            <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
               <OrderInfo />
             </Modal>
           }
         />
       </Route>
-      <Route path='/ingredients/:id' element={<IngredientDetails />} />
+      <Route path='/ingredients/:id' element={<Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}><IngredientDetails /></Modal>} />
     </Routes>
 
   </div>
-);
+)
+};
 
 export default App;
