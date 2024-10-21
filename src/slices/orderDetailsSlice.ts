@@ -83,7 +83,7 @@ export const fetchPostOrder = createAsyncThunk(
     'orderDetails/fetchPostOrder',
     async (ingredientsID: string[]) => {
       const data = await orderBurgerApi(ingredientsID)
-      console.log(data)
+      
       return data;
     })
 

@@ -21,9 +21,6 @@ const burgerIngredientsSlice = createSlice({
     selectors: {
         loadingIngredients: (state) => state.loading,
         getIngredients: (state) => state.ingredients,
-
-        // getIngredientById: (state) => (id: string) => state.ingredients.find((ingredient) => ingredient._id === id),
-        
       },
     extraReducers: (builder) => {
         builder

@@ -26,7 +26,7 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchIngredientsData());
     dispatch(getUserApiThunk());
-  }, []);
+  }, [dispatch]);
 
   const user = useSelector(getUserState);
 

@@ -9,7 +9,7 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { ordersSliceReducer } from '../slices/ordersSlice';
+// import { ordersSliceReducer } from '../slices/ordersSlice';
 
 const rootReducer = combineReducers({ 
   burgerIngredients: burgerIngredientsReducer,

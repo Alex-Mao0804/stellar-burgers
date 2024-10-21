@@ -26,9 +26,8 @@ const feedSlice = createSlice({
     selectors: {
       isLoading: (state) => state.loading,
         getOrders: (state) => state.feeds.orders,
-        getFeed: (state) => state.feeds
-
-      },
+        getFeed: (state) => state.feeds,
+    },
     extraReducers: (builder) => {
         builder
           .addCase(fetchFeedsData.pending, (state) => {
@@ -49,11 +48,7 @@ const feedSlice = createSlice({
 });
 
 export const {isLoading, getOrders, getFeed } = feedSlice.selectors
-// export const { } = ingredientsSlice.actions
-// Если у вас есть отдельный слайс для ингредиентов
-// export const getIngredientById = (state: TOrdersDataState, id: string) =>
-//   state.feeds.orders.ingredients.find((ingredient) => ingredient._id === id);
-
+export const getOrderByNum = (state: TOrdersDataState, num: number) => state.feeds.orders.find((order) => order.number === num);
 export const feedSliceReducer = feedSlice.reducer;
 
 export const fetchFeedsData = createAsyncThunk<TOrdersData>(

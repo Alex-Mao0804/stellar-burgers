@@ -6,7 +6,8 @@ import {
   registerUserApi,
   TRegisterData,
   getUserApi,
-  logoutApi
+  logoutApi,
+  updateUserApi
 } from '../utils/burger-api';
 import { get } from 'http';
 import { FC } from 'react';
@@ -86,7 +87,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserApiThunk.rejected, (state, action) => {
         state.loginUserRequest = false;
-        state.loginUserError = action.error.message ?? '';
+        // state.loginUserError = action.error.message ?? '';
         state.isAuthChecked = true;
       })
       .addCase(getUserApiThunk.fulfilled, (state, action) => {
@@ -94,7 +95,32 @@ const userSlice = createSlice({
         state.loginUserRequest = false;
         state.isAuthenticated = true;
         state.isAuthChecked = true;
-      });
+      })
+
+      .addCase(updateUser.pending, (state) => {
+        state.loginUserRequest = true; //loading
+        state.loginUserError = '';
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loginUserRequest = false; //loading
+        state.loginUserError = action.error.message ?? '';
+        state.isAuthChecked = true; 
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loginUserRequest = false; //loading
+        state.isAuthChecked = true;
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      })
+
+      .addCase(logoutUser.fulfilled, (state, action) => {
+state.user = {
+  name: '',
+  email: ''
+};
+state.isAuthenticated = false;
+state.isAuthChecked = true;
+      })
   }
 });
 
@@ -117,7 +143,7 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }: Omit<TLoginData, 'name'>) => {
     const data = await loginUserApi({ email, password });
     if (!data?.success) {
-      return data;
+      console.log(`Login error: ${data?.success}`);
     }
     setCookie('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
@@ -137,6 +163,9 @@ export const registerUser = createAsyncThunk(
 
 export const getUserApiThunk = createAsyncThunk('user/getUser', async () => {
   const data = await getUserApi();
+  if (!data?.success) {
+    console.log(`Ошибка получения пользователя: ${data?.success}`);
+  }
   return data;
 });
 
@@ -152,5 +181,14 @@ export const logoutUser = createAsyncThunk(
       .catch(() => {
         console.log('Ошибка выполнения выхода');
       });
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user: Partial<TRegisterData>) => {
+    const data = await updateUserApi(user);
+    console.log(data)
+    return data;
   }
 );

@@ -39,12 +39,7 @@ const burgerConstructorSlice = createSlice({
           },
 
           clearIngredients(state) {
-            state.bun = {
-                _id: '',
-                name: '',
-                image: '',
-                price: 0
-            }
+            state.bun = undefined;
             state.ingredients = [];
           },
 

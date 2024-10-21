@@ -13,7 +13,6 @@ export const IngredientsCategory = forwardRef<
   const burgerConstructor = useSelector(getBurgerConstructor);
   // console.log(burgerConstructor);
 
-
   const ingredientsCounters = useMemo(() => {
     const { bun, ingredients } = burgerConstructor;
     const counters: { [key: string]: number } = {};
