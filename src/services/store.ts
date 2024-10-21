@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   feeds: feedSliceReducer,
   user: userReducer,
-  userOrders: ordersSliceReducer,
+  // userOrders: ordersSliceReducer,
   orderDetails: orderDetailsReducer
 
   }); // Заменить на импорт настоящего редьюсера. Например: const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера

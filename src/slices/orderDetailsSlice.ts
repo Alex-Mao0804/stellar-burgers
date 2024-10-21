@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {TConstructorIngredient, TIngredient, TOrder} from '@utils-types';
-import {orderBurgerApi} from '../utils/burger-api';
+import {orderBurgerApi, getOrdersApi} from '../utils/burger-api';
 import { clear } from 'console';
 import { clearScreenDown } from 'readline';
 
@@ -10,6 +10,7 @@ type TOrderDetailsState = {
   success: boolean;
     isLoading: boolean;
     isError: string;
+  userOrders: TOrder[]
 
 };
 
@@ -19,6 +20,7 @@ const initialState: TOrderDetailsState = {
   success: false,
   isLoading: false,
   isError: '',
+  userOrders: []
 };
 
 const orderDetailsSlice = createSlice({
@@ -30,6 +32,7 @@ const orderDetailsSlice = createSlice({
     selectors: {
       getOrderModalData: (state) => state.order,
       getIsLoading: (state) => state.isLoading,
+      getUserOrders: (state) => state.userOrders
     },
 
       extraReducers: (builder) => {
@@ -50,11 +53,29 @@ const orderDetailsSlice = createSlice({
           state.name = action.payload.name;
           state.order = action.payload.order
         })
+
+
+        .addCase(fetchUserOrders.pending, (state) => {
+          state.isLoading = true;
+          state.isError = '';
+        })
+
+        .addCase(fetchUserOrders.rejected, (state, action) => {
+          state.isLoading = false;
+          state.isError = action.error.message ?? '';
+        })
+
+        .addCase(fetchUserOrders.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.isError = '';
+          state.userOrders = action.payload;
+
+        })
       }
 
 });
 
-export const {getOrderModalData, getIsLoading} = orderDetailsSlice.selectors
+export const {getOrderModalData, getIsLoading, getUserOrders} = orderDetailsSlice.selectors
 export const {clearOrderDetails} = orderDetailsSlice.actions
 export const orderDetailsReducer = orderDetailsSlice.reducer;
 
@@ -65,3 +86,10 @@ export const fetchPostOrder = createAsyncThunk(
       console.log(data)
       return data;
     })
+
+    export const fetchUserOrders = createAsyncThunk(
+      'orderDetails/fetchUserOrders',
+      async () => {
+        const data = await getOrdersApi()
+        return data;
+      });
