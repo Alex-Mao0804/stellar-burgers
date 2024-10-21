@@ -1,5 +1,6 @@
-import { createSlice} from '@reduxjs/toolkit';
-import {TConstructorIngredient, TIngredient} from '@utils-types';
+import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {TConstructorIngredient, TIngredient, TOrder} from '@utils-types';
+import {orderBurgerApi} from '../utils/burger-api';
 
 type TAddIngredientsState = {
     bun?: {
@@ -9,6 +10,9 @@ type TAddIngredientsState = {
         price: number;
     }
     ingredients: TConstructorIngredient[];
+    request?: boolean;
+    error?: string;
+
 };
 
 const initialState: TAddIngredientsState = {
@@ -33,20 +37,7 @@ const addIngredientsSlice = createSlice({
                 state.ingredients.push(action.payload);
             }
           },
-        //   removeIngredient(state, action) {
-        //     if (action.payload.type === 'bun') {
-        //         state.bun = {
-        //             _id: '',
-        //             name: '',
-        //             image: '',
-        //             price: 0
-        //         };
-        //     } else {
-        //         state.ingredients = state.ingredients.filter(
-        //             (ingredient) => ingredient._id !== action.payload
-        //         );
-        //     }
-        //   },
+
           clearIngredients(state) {
             state.bun = {
                 _id: '',
@@ -68,9 +59,36 @@ const addIngredientsSlice = createSlice({
         getIngredients: (state) => state.ingredients,
       },
 
+      extraReducers: (builder) => {
+        builder
+        .addCase(fetchPostOrders.pending, (state) => {
+            state.request = true;
+            state.error = '';
+              })
+        .addCase(fetchPostOrders.rejected, (state, action) => {
+            state.request = false;
+            state.error = action.error.message ?? '';
+        })
+        .addCase(fetchPostOrders.fulfilled, (state, action) => {
+            // state.user = action.payload.user;
+
+            // state.ingredients = action.payload
+            state.request = false;
+            // state.checked = true;
+        })
+      }
+
 });
 
 export const {getBurgerConstructor, getIngredients} = addIngredientsSlice.selectors
 export const {addIngredient, clearIngredients,  onUpdateIngredients} = addIngredientsSlice.actions
 export const addIngredientsReducer = addIngredientsSlice.reducer;
 
+export const fetchPostOrders = createAsyncThunk(
+    'addIngredients/fetchPostOrders',
+    async (ingredients: TConstructorIngredient[]) => {
+        const id: string[] = ingredients.map((ingredient) => ingredient._id);
+      const data = await orderBurgerApi(id)
+      console.log(data)
+      return data;
+    })

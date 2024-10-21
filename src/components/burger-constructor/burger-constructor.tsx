@@ -2,19 +2,21 @@ import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchIngredientsData, getIngredients } from '../../slices/ingredientsSlice';
-import { getBurgerConstructor } from '../../slices/addIngredientsSlice';
+import { fetchPostOrders, getBurgerConstructor,getIngredients } from '../../slices/addIngredientsSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = useSelector(getBurgerConstructor);
-
+  const dispatch = useDispatch();
   const orderRequest = false;
+  const ingredients = useSelector(getIngredients);
+  const orderModalData = null
+  
 
-  const orderModalData = null;
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    dispatch(fetchPostOrders(ingredients));
   };
   const closeOrderModal = () => {};
 

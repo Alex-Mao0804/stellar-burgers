@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {TUser} from '@utils-types';
-import {loginUserApi, TLoginData, registerUserApi, TRegisterData} from '../utils/burger-api';
+import {loginUserApi, TLoginData, registerUserApi, TRegisterData, getUserApi, logoutApi} from '../utils/burger-api';
 import { get } from 'http';
 import { FC } from 'react';
-import { setCookie } from '../utils/cookie';
+import { deleteCookie, setCookie } from '../utils/cookie';
 
 type TUserState = {
   user: TUser
@@ -28,12 +28,17 @@ const initialState: TUserState = {
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+      userLogout: (state) => {
+        state = initialState;
+      }
+    },
     selectors: {
-      getUser: (state) => state.user,
+      getUserState: (state) => state.user,
       getError: (state) => state.loginUserError,
       getIsLoader: (state) => state.loginUserRequest,
-      getAuthenticated: (state) => state.isAuthenticated
+      getAuthenticated: (state) => state.isAuthenticated,
+      getAuthChecked: (state) => state.isAuthChecked
     },
     extraReducers: (builder) => {
       builder
@@ -71,11 +76,27 @@ const userSlice = createSlice({
         state.isAuthChecked = true;
     })
 
+
+    .addCase(getUserApiThunk.pending, (state) => {
+      state.loginUserRequest = true;
+      state.loginUserError = '';
+        })
+  .addCase(getUserApiThunk.rejected, (state, action) => {
+        state.loginUserRequest = false;
+      state.loginUserError = action.error.message ?? '';
+      state.isAuthChecked = true;
+  })
+  .addCase(getUserApiThunk.fulfilled, (state, action) => {
+          state.user = action.payload.user;
+      state.loginUserRequest = false;
+            state.isAuthenticated = true;
+      state.isAuthChecked = true;
+  })
   }
 });
 
-export const {getUser, getError, getIsLoader, getAuthenticated} = userSlice.selectors
-// export const { } = ingredientsSlice.actions
+export const {getUserState, getError, getIsLoader, getAuthenticated, getAuthChecked} = userSlice.selectors
+export const { userLogout} = userSlice.actions
 // Если у вас есть отдельный слайс для ингредиентов
 // export const getIngredientById = (state: TOrdersDataState, id: string) =>
 //   state.feeds.orders.ingredients.find((ingredient) => ingredient._id === id);
@@ -96,7 +117,7 @@ export const loginUser = createAsyncThunk(
 ); 
 
 export const registerUser = createAsyncThunk(
-  'user/registerUser', // исправлено здесь
+  'user/registerUser',
   async ({ email, password, name }: TRegisterData) => {
     const data = await registerUserApi({ email, password, name })
     setCookie('accessToken', data.accessToken);
@@ -104,3 +125,25 @@ export const registerUser = createAsyncThunk(
     return data;
   }
 );
+
+export const getUserApiThunk = createAsyncThunk(
+  'user/getUser',
+  async () => {
+    const data = await getUserApi()
+        return data;
+  })
+
+  export const logoutUser = createAsyncThunk(
+    'user/logoutUser',
+    (_, { dispatch }) => {
+      logoutApi()
+        .then(() => {
+          localStorage.clear(); // очищаем refreshToken
+          deleteCookie('accessToken'); // очищаем accessToken
+          dispatch(userLogout()); // удаляем пользователя из хранилища
+        })
+        .catch(() => {
+          console.log('Ошибка выполнения выхода');
+        });
+    }
+  );

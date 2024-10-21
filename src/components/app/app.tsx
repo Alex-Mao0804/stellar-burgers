@@ -18,18 +18,21 @@ import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredientsData } from '../../slices/ingredientsSlice';
-import { getUser } from '../../slices/userSlice';
+import { getUserState, getUserApiThunk } from '../../slices/userSlice';
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); 
   useEffect(() => {
     dispatch(fetchIngredientsData());
+    dispatch(getUserApiThunk());
   }, []);
+
+  const user = useSelector(getUserState);
 
   return (
   <div className={styles.app}>
-    <AppHeader />
+    <AppHeader userName={user.name}/>
     <Routes>
       <Route path='*' element={<NotFound404 />} />
       <Route path='/' element={<ConstructorPage />} />
@@ -47,7 +50,7 @@ const App = () => {
       <Route
         path='/login'
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <Login />
           </ProtectedRoute>
         }
@@ -55,7 +58,7 @@ const App = () => {
       <Route
         path='/register'
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <Register />
           </ProtectedRoute>
         }
@@ -63,7 +66,7 @@ const App = () => {
       <Route
         path='/forgot-password'
         element={
-          <ProtectedRoute>
+          <ProtectedRoute onlyUnAuth>
             <ForgotPassword />
           </ProtectedRoute>
         }
@@ -71,7 +74,7 @@ const App = () => {
       <Route
         path='/reset-password'
         element={
-          <ProtectedRoute>
+          <ProtectedRoute >
             <ResetPassword />
           </ProtectedRoute>
         }
@@ -88,7 +91,7 @@ const App = () => {
         <Route
           path='orders'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute >
               <ProfileOrders />
             </ProtectedRoute>
           }
