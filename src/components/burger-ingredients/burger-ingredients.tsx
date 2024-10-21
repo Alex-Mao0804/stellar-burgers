@@ -4,7 +4,7 @@ import { RootState, AppDispatch, useDispatch, useSelector } from '../../services
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import {fetchIngredientsData, getIngredients} from '../../slices/ingredientsSlice';
+import {fetchIngredientsData, getIngredients} from '../../slices/burgerIngredientsSlice';
 
 export const BurgerIngredients: FC = () => {
 

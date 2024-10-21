@@ -5,7 +5,7 @@ import { OrderCardProps } from './type';
 import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
 import { useSelector } from '../../services/store';
-import { getIngredients } from '../../slices/ingredientsSlice';
+import { getIngredients } from '../../slices/burgerIngredientsSlice';
 // import { getIngredientById } from '../../slices/feedSlice';
 
 

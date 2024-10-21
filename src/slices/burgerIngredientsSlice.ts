@@ -14,8 +14,8 @@ const initialState: TIngredientsState = {
     error: null
 };
 
-const ingredientsSlice = createSlice({
-    name: 'ingredients',
+const burgerIngredientsSlice = createSlice({
+    name: 'burgerIngredients',
     initialState,
     reducers: {},
     selectors: {
@@ -43,14 +43,14 @@ const ingredientsSlice = createSlice({
       },
 });
 
-export const {loadingIngredients, getIngredients } = ingredientsSlice.selectors
-export const { } = ingredientsSlice.actions
+export const {loadingIngredients, getIngredients } = burgerIngredientsSlice.selectors
+export const { } = burgerIngredientsSlice.actions
 export const getIngredientById = (state: TIngredientsState, id: string) =>
   state.ingredients.find((ingredient) => ingredient._id === id);
-export const ingredientsReducer = ingredientsSlice.reducer;
+export const burgerIngredientsReducer = burgerIngredientsSlice.reducer;
 
 export const fetchIngredientsData = createAsyncThunk<TIngredient[]>(
-    'ingredients/fetchIngredientsData',
+    'burgerIngredients/fetchIngredientsData',
     async () => {
         return await getIngredientsApi(); }
 );

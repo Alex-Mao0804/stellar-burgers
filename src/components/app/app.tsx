@@ -17,7 +17,7 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
-import { fetchIngredientsData } from '../../slices/ingredientsSlice';
+import { fetchIngredientsData } from '../../slices/burgerIngredientsSlice';
 import { getUserState, getUserApiThunk } from '../../slices/userSlice';
 
 const App = () => {

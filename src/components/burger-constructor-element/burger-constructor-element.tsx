@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
 import { useDispatch, useSelector } from '../../services/store';
-import { getIngredients, onUpdateIngredients } from '../../slices/addIngredientsSlice';
+import { getIngredients, onUpdateIngredients } from '../../slices/burgerConstructorSlice';
 
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(

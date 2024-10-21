@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {TConstructorIngredient, TIngredient, TOrder} from '@utils-types';
 import {orderBurgerApi} from '../utils/burger-api';
 
-type TAddIngredientsState = {
+type TBurgerConstructorState = {
     bun?: {
         _id: string ;
         name: string ;
@@ -15,14 +15,14 @@ type TAddIngredientsState = {
 
 };
 
-const initialState: TAddIngredientsState = {
+const initialState: TBurgerConstructorState = {
 
     ingredients: [],
 
 };
 
-const addIngredientsSlice = createSlice({
-    name: 'addIngredients',
+const burgerConstructorSlice = createSlice({
+    name: 'burgerConstructor',
     initialState,
     reducers: {
         addIngredient(state, action) {
@@ -80,12 +80,12 @@ const addIngredientsSlice = createSlice({
 
 });
 
-export const {getBurgerConstructor, getIngredients} = addIngredientsSlice.selectors
-export const {addIngredient, clearIngredients,  onUpdateIngredients} = addIngredientsSlice.actions
-export const addIngredientsReducer = addIngredientsSlice.reducer;
+export const {getBurgerConstructor, getIngredients} = burgerConstructorSlice.selectors
+export const {addIngredient, clearIngredients,  onUpdateIngredients} = burgerConstructorSlice.actions
+export const burgerConstructorReducer = burgerConstructorSlice.reducer;
 
 export const fetchPostOrders = createAsyncThunk(
-    'addIngredients/fetchPostOrders',
+    'burgerConstructor/fetchPostOrders',
     async (ingredients: TConstructorIngredient[]) => {
         const id: string[] = ingredients.map((ingredient) => ingredient._id);
       const data = await orderBurgerApi(id)
