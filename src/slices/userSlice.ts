@@ -104,7 +104,7 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loginUserRequest = false; //loading
         state.loginUserError = action.error.message ?? '';
-        state.isAuthChecked = true; 
+        state.isAuthChecked = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loginUserRequest = false; //loading
@@ -114,13 +114,13 @@ const userSlice = createSlice({
       })
 
       .addCase(logoutUser.fulfilled, (state, action) => {
-state.user = {
-  name: '',
-  email: ''
-};
-state.isAuthenticated = false;
-state.isAuthChecked = true;
-      })
+        state.user = {
+          name: '',
+          email: ''
+        };
+        state.isAuthenticated = false;
+        state.isAuthChecked = true;
+      });
   }
 });
 
@@ -188,7 +188,7 @@ export const updateUser = createAsyncThunk(
   'user/updateUser',
   async (user: Partial<TRegisterData>) => {
     const data = await updateUserApi(user);
-    console.log(data)
+    console.log(data);
     return data;
   }
 );

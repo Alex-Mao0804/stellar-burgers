@@ -8,7 +8,6 @@ import { useSelector } from '../../services/store';
 import { getIngredients } from '../../slices/burgerIngredientsSlice';
 // import { getIngredientById } from '../../slices/feedSlice';
 
-
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {

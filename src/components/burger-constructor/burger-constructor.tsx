@@ -2,9 +2,17 @@ import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import {clearIngredients, getBurgerConstructor} from '../../slices/burgerConstructorSlice';
-import {getOrderModalData,  getIsLoading, fetchPostOrder, clearOrderDetails} from '../../slices/orderDetailsSlice';
-import {getAuthChecked, getUserState} from '../../slices/userSlice';
+import {
+  clearIngredients,
+  getBurgerConstructor
+} from '../../slices/burgerConstructorSlice';
+import {
+  getOrderModalData,
+  getIsLoading,
+  fetchPostOrder,
+  clearOrderDetails
+} from '../../slices/orderDetailsSlice';
+import { getAuthChecked, getUserState } from '../../slices/userSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
@@ -13,29 +21,29 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const orderRequest = useSelector(getIsLoading);
   const orderModalData = useSelector(getOrderModalData);
-  const user = useSelector(getUserState)
+  const user = useSelector(getUserState);
   const navigate = useNavigate();
 
-
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest ) return;
+    if (!constructorItems.bun || orderRequest) return;
     if (!user.name) {
-      navigate('/login')
-      return
+      navigate('/login');
+      return;
     }
-  
-  
+
     const ingredientsID = [
       constructorItems.bun._id,
       constructorItems.bun._id,
-      ...constructorItems.ingredients.map((item: TConstructorIngredient) => item._id)
-    ]
+      ...constructorItems.ingredients.map(
+        (item: TConstructorIngredient) => item._id
+      )
+    ];
     dispatch(fetchPostOrder(ingredientsID));
     dispatch(clearIngredients());
-
-  
   };
-  const closeOrderModal = () => {dispatch(clearOrderDetails())};
+  const closeOrderModal = () => {
+    dispatch(clearOrderDetails());
+  };
 
   const price = useMemo(
     () =>

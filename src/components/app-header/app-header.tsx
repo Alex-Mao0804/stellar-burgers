@@ -4,4 +4,6 @@ interface AppHeaderProps {
   userName: string; // Указываем тип для userName
 }
 
-export const AppHeader: FC<AppHeaderProps> = ({ userName }) =>  <AppHeaderUI userName={userName} />;
+export const AppHeader: FC<AppHeaderProps> = ({ userName }) => (
+  <AppHeaderUI userName={userName} />
+);

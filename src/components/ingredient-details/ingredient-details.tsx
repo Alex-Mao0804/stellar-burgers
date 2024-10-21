@@ -9,7 +9,9 @@ export const IngredientDetails: FC = () => {
   const { id } = useParams();
   let ingredientData = null;
   if (id) {
-    ingredientData = useSelector(state => getIngredientById(state.burgerIngredients, id));
+    ingredientData = useSelector((state) =>
+      getIngredientById(state.burgerIngredients, id)
+    );
   }
 
   if (!ingredientData) {

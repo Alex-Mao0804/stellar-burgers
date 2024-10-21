@@ -7,7 +7,7 @@ import { useDispatch } from '../../services/store';
 export const Profile: FC = () => {
   const dispatch = useDispatch();
   /** TODO: взять переменную из стора */
-  const user = useSelector(getUserState)
+  const user = useSelector(getUserState);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -30,7 +30,7 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(updateUser(formValue))
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
