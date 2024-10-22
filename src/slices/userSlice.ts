@@ -125,17 +125,8 @@ const userSlice = createSlice({
   }
 });
 
-export const {
-  getUserState,
-  getError,
-  getIsLoader,
-  getAuthenticated,
-  getAuthChecked
-} = userSlice.selectors;
-export const { userLogout } = userSlice.actions;
-// Если у вас есть отдельный слайс для ингредиентов
-// export const getIngredientById = (state: TOrdersDataState, id: string) =>
-//   state.feeds.orders.ingredients.find((ingredient) => ingredient._id === id);
+export const userSelectors = userSlice.selectors;
+export const userActions = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
 
@@ -177,7 +168,7 @@ export const logoutUser = createAsyncThunk(
       .then(() => {
         localStorage.clear(); // очищаем refreshToken
         deleteCookie('accessToken'); // очищаем accessToken
-        dispatch(userLogout()); // удаляем пользователя из хранилища
+        dispatch(userActions.userLogout()); // удаляем пользователя из хранилища
       })
       .catch(() => {
         console.log('Ошибка выполнения выхода');

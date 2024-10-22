@@ -4,8 +4,8 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
 import { useParams } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { getOrderByNum, getFeed } from '../../slices/feedSlice';
-import { getIngredients } from '../../slices/burgerIngredientsSlice';
+import { getOrderByNum, feedSliceSelectors } from '../../slices/feedSlice';
+import { burgerIngredientsSelectors } from '../../slices/burgerIngredientsSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
@@ -14,7 +14,7 @@ export const OrderInfo: FC = () => {
     getOrderByNum(state.feeds, Number(number))
   );
 
-  const ingredients: TIngredient[] = useSelector(getIngredients);
+  const ingredients: TIngredient[] = useSelector(burgerIngredientsSelectors.getIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

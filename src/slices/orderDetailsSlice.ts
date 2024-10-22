@@ -72,9 +72,10 @@ const orderDetailsSlice = createSlice({
   }
 });
 
-export const { getOrderModalData, getIsLoading, getUserOrders } =
+export const orderDetailsSelectors =
   orderDetailsSlice.selectors;
-export const { clearOrderDetails } = orderDetailsSlice.actions;
+export const orderDetailsActions = orderDetailsSlice.actions;
+
 export const orderDetailsReducer = orderDetailsSlice.reducer;
 
 export const fetchPostOrder = createAsyncThunk(

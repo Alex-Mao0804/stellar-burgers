@@ -4,8 +4,8 @@ import { registerUserApi } from '../../utils/burger-api';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   registerUser,
-  getAuthenticated,
-  getError
+  userSelectors,
+  
 } from '../../slices/userSlice';
 import { Navigate } from 'react-router-dom';
 
@@ -14,8 +14,8 @@ export const Register: FC = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const errorText = useSelector(getError);
-  const isAuth = useSelector(getAuthenticated);
+  const errorText = useSelector(userSelectors.getError);
+  const isAuth = useSelector(userSelectors.getAuthenticated);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

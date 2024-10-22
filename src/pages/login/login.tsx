@@ -1,10 +1,8 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import {
-  getAuthenticated,
-  getError,
+  userSelectors,
   loginUser,
-  getAuthChecked
 } from '../../slices/userSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
@@ -13,9 +11,9 @@ import { Preloader } from '../../components/ui/preloader/preloader';
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const errorText = useSelector(getError);
-  const isAuth = useSelector(getAuthenticated);
-  const isAuthChecked = useSelector(getAuthChecked);
+  const errorText = useSelector(userSelectors.getError);
+  const isAuth = useSelector(userSelectors.getAuthenticated);
+  const isAuthChecked = useSelector(userSelectors.getAuthChecked);
 
   const navigate = useNavigate();
 

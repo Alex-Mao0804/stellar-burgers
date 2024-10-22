@@ -3,12 +3,12 @@ import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchFeedsData, getOrders, isLoading } from '../../slices/feedSlice';
+import { fetchFeedsData, feedSliceSelectors} from '../../slices/feedSlice';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(isLoading); // Получаем состояние загрузки
-  const orders: TOrder[] = useSelector(getOrders);
+  const loading = useSelector(feedSliceSelectors.isLoading); // Получаем состояние загрузки
+  const orders: TOrder[] = useSelector(feedSliceSelectors.getOrders);
   useEffect(() => {
     dispatch(fetchFeedsData());
   }, [dispatch]);

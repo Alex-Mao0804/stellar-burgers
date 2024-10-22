@@ -11,11 +11,11 @@ import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import {
   fetchIngredientsData,
-  getIngredients
+  burgerIngredientsSelectors
 } from '../../slices/burgerIngredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const ingredients = useSelector(getIngredients);
+  const ingredients = useSelector(burgerIngredientsSelectors.getIngredients);
 
   /** TODO: взять переменные из стора */
   const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');

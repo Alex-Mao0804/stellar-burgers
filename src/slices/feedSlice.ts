@@ -47,7 +47,8 @@ const feedSlice = createSlice({
   }
 });
 
-export const { isLoading, getOrders, getFeed } = feedSlice.selectors;
+export const feedSliceSelectors = feedSlice.selectors;
+
 export const getOrderByNum = (state: TOrdersDataState, num: number) =>
   state.feeds.orders.find((order) => order.number === num);
 export const feedSliceReducer = feedSlice.reducer;

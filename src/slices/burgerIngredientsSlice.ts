@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '../utils/burger-api';
-import {BURGER_INGREDIENTS_SLICE_NAME} from '../slices/sliceNames';
-
+import { BURGER_INGREDIENTS_SLICE_NAME } from '../slices/sliceNames';
 
 type TIngredientsState = {
   ingredients: TIngredient[];
@@ -42,9 +41,7 @@ const burgerIngredientsSlice = createSlice({
   }
 });
 
-export const { loadingIngredients, getIngredients } =
-  burgerIngredientsSlice.selectors;
-export const {} = burgerIngredientsSlice.actions;
+export const burgerIngredientsSelectors = burgerIngredientsSlice.selectors;
 export const getIngredientById = (state: TIngredientsState, id: string) =>
   state.ingredients.find((ingredient) => ingredient._id === id);
 export const burgerIngredientsReducer = burgerIngredientsSlice.reducer;

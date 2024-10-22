@@ -18,7 +18,7 @@ import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredientsData } from '../../slices/burgerIngredientsSlice';
-import { getUserState, getUserApiThunk } from '../../slices/userSlice';
+import { userSelectors, getUserApiThunk } from '../../slices/userSlice';
 
 const App = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const App = () => {
   }, [dispatch]);
   const location = useLocation();
   const background = location.state?.background;
-  const user = useSelector(getUserState);
+  const user = useSelector(userSelectors.getUserState);
 
   return (
     <div className={styles.app}>
