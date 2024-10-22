@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequestStatus, TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import {
+  RequestStatus,
+  TConstructorIngredient,
+  TIngredient,
+  TOrder
+} from '@utils-types';
 import { orderBurgerApi } from '../utils/burger-api';
-import {BURGER_CONSTRUCTOR_SLICE_NAME} from '../slices/sliceNames';
+import { BURGER_CONSTRUCTOR_SLICE_NAME } from '../slices/sliceNames';
 
 type TBurgerConstructorState = {
   bun?: {
@@ -11,8 +16,7 @@ type TBurgerConstructorState = {
     price: number;
   };
   ingredients: TConstructorIngredient[];
-  requestStatus: RequestStatus,
-
+  requestStatus: RequestStatus;
 };
 
 const initialState: TBurgerConstructorState = {
@@ -67,9 +71,8 @@ const burgerConstructorSlice = createSlice({
 
 export const burgerConstructorReducer = burgerConstructorSlice.reducer;
 
-
-export const burgerConstructorSelectors =  burgerConstructorSlice.selectors;  
-export const burgerConstructorActions =  burgerConstructorSlice.actions;
+export const burgerConstructorSelectors = burgerConstructorSlice.selectors;
+export const burgerConstructorActions = burgerConstructorSlice.actions;
 export default burgerConstructorSlice;
 
 export const fetchPostOrders = createAsyncThunk(

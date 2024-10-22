@@ -13,11 +13,13 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
   const location = useLocation(); // Получаем текущий путь
   const loginRegProfile = ['/login', '/register', '/profile'];
   const feedPath = ['/feed'];
-    const isPathActive = (pathArray: string[], currentPath: string) => {
-      return pathArray.some(route => currentPath.startsWith(route));
-    };
-    const loginRegProfileActive = isPathActive(loginRegProfile, location.pathname);
-    const feedActive = isPathActive(feedPath, location.pathname);
+  const isPathActive = (pathArray: string[], currentPath: string) =>
+    pathArray.some((route) => currentPath.startsWith(route));
+  const loginRegProfileActive = isPathActive(
+    loginRegProfile,
+    location.pathname
+  );
+  const feedActive = isPathActive(feedPath, location.pathname);
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -37,9 +39,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
             to={'/feed'}
             className={`${styles.link} ${feedActive ? styles.link_active : ''}`}
           >
-            <ListIcon
-              type={feedActive ? 'primary' : 'secondary'}
-            />
+            <ListIcon type={feedActive ? 'primary' : 'secondary'} />
             <p className='text text_type_main-default ml-2'>Лента заказов</p>
           </Link>
         </div>

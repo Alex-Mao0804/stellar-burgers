@@ -9,7 +9,9 @@ import { FC } from 'react';
 import { burgerIngredientsSelectors } from '../../slices/burgerIngredientsSlice';
 
 export const ConstructorPage: FC = () => {
-  const isIngredientsLoading = useSelector(burgerIngredientsSelectors.loadingIngredients);
+  const isIngredientsLoading = useSelector(
+    burgerIngredientsSelectors.loadingIngredients
+  );
   return (
     <>
       {isIngredientsLoading ? (

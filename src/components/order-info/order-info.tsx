@@ -8,12 +8,14 @@ import { getOrderByNum, feedSliceSelectors } from '../../slices/feedSlice';
 import { burgerIngredientsSelectors } from '../../slices/burgerIngredientsSlice';
 
 export const OrderInfo: FC = () => {
-  const { number } = useParams();
+  const { id: number } = useParams();
   const orderData = useSelector((state) =>
     getOrderByNum(state.feeds, Number(number))
   );
 
-  const ingredients: TIngredient[] = useSelector(burgerIngredientsSelectors.getIngredients);
+  const ingredients: TIngredient[] = useSelector(
+    burgerIngredientsSelectors.getIngredients
+  );
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

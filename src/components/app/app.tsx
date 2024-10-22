@@ -28,7 +28,6 @@ const App = () => {
     dispatch(fetchIngredientsData());
     dispatch(getUserApiThunk());
     dispatch(fetchFeedsData());
-
   }, [dispatch]);
   const location = useLocation();
   const background = location.state?.background;
@@ -40,17 +39,8 @@ const App = () => {
       <Routes location={background || location}>
         <Route path='*' element={<NotFound404 />} />
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed'>
-          <Route index element={<Feed />} />
-          <Route
-            path=':number'
-            element={
-              <Modal title={'Заказ'} onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-        </Route>
+        <Route path='/feed' element={<Feed />} />
+
         <Route
           path='/login'
           element={
@@ -100,7 +90,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route path='orders/:number' element={<OrderInfo />} />
         </Route>
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
       </Routes>
@@ -108,7 +97,25 @@ const App = () => {
       {background && (
         <Routes>
           <Route
-            path='/feed/:number'
+            path='/feed/:id'
+            element={
+              <Modal title={'Заказ'} onClose={() => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <ProtectedRoute>
+                <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/feed/:id'
             element={
               <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
                 <OrderInfo />

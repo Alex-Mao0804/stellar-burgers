@@ -2,11 +2,7 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { registerUserApi } from '../../utils/burger-api';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  registerUser,
-  userSelectors,
-  
-} from '../../slices/userSlice';
+import { registerUser, userSelectors } from '../../slices/userSlice';
 import { Navigate } from 'react-router-dom';
 
 export const Register: FC = () => {

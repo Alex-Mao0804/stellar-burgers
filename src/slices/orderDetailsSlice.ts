@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequestStatus, TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import {
+  RequestStatus,
+  TConstructorIngredient,
+  TIngredient,
+  TOrder
+} from '@utils-types';
 import { orderBurgerApi, getOrdersApi } from '../utils/burger-api';
 import { clear } from 'console';
 import { clearScreenDown } from 'readline';
@@ -8,7 +13,7 @@ import { ORDER_DETAILS_SLICE_NAME } from './sliceNames';
 type TOrderDetailsState = {
   order: TOrder | null;
   name: string;
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus;
   isError: string;
   userOrders: TOrder[];
 };
@@ -67,8 +72,7 @@ const orderDetailsSlice = createSlice({
   }
 });
 
-export const orderDetailsSelectors =
-  orderDetailsSlice.selectors;
+export const orderDetailsSelectors = orderDetailsSlice.selectors;
 export const orderDetailsActions = orderDetailsSlice.actions;
 
 export const orderDetailsReducer = orderDetailsSlice.reducer;

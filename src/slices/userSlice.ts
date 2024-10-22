@@ -19,7 +19,7 @@ type TUserState = {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   loginUserError: string;
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus;
 };
 
 const initialState: TUserState = {
@@ -30,8 +30,7 @@ const initialState: TUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   loginUserError: '',
-  requestStatus: RequestStatus.Idle,
-
+  requestStatus: RequestStatus.Idle
 };
 
 const userSlice = createSlice({

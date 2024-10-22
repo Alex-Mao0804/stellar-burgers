@@ -2,19 +2,23 @@ import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import {burgerConstructorSelectors, burgerConstructorActions} from '../../slices/burgerConstructorSlice';
+import {
+  burgerConstructorSelectors,
+  burgerConstructorActions
+} from '../../slices/burgerConstructorSlice';
 import {
   orderDetailsSelectors,
-
   fetchPostOrder,
   orderDetailsActions
 } from '../../slices/orderDetailsSlice';
-import {userSelectors } from '../../slices/userSlice';
+import { userSelectors } from '../../slices/userSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = useSelector(burgerConstructorSelectors.getBurgerConstructor);
+  const constructorItems = useSelector(
+    burgerConstructorSelectors.getBurgerConstructor
+  );
   const dispatch = useDispatch();
   const orderRequest = useSelector(orderDetailsSelectors.getIsLoading);
   const orderModalData = useSelector(orderDetailsSelectors.getOrderModalData);

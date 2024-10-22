@@ -5,7 +5,7 @@ import { BURGER_INGREDIENTS_SLICE_NAME } from '../slices/sliceNames';
 
 type TIngredientsState = {
   ingredients: TIngredient[];
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus;
   error: string | null;
 };
 
@@ -20,7 +20,8 @@ const burgerIngredientsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    loadingIngredients: (state) => state.requestStatus === RequestStatus.Loading,
+    loadingIngredients: (state) =>
+      state.requestStatus === RequestStatus.Loading,
     getIngredients: (state) => state.ingredients
   },
   extraReducers: (builder) => {

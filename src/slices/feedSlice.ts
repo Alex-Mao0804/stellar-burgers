@@ -6,7 +6,7 @@ import { FEEDS_SLICE_NAME } from '../slices/sliceNames';
 
 type TOrdersDataState = {
   feeds: TOrdersData;
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus;
   error: string | null;
 };
 

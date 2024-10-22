@@ -9,11 +9,13 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { BURGER_CONSTRUCTOR_SLICE_NAME,
+import {
+  BURGER_CONSTRUCTOR_SLICE_NAME,
   BURGER_INGREDIENTS_SLICE_NAME,
-  FEEDS_SLICE_NAME, ORDER_DETAILS_SLICE_NAME,
+  FEEDS_SLICE_NAME,
+  ORDER_DETAILS_SLICE_NAME,
   USER_SLICE_NAME
- } from '../slices/sliceNames';
+} from '../slices/sliceNames';
 
 const rootReducer = combineReducers({
   [BURGER_INGREDIENTS_SLICE_NAME]: burgerIngredientsReducer,
@@ -21,7 +23,7 @@ const rootReducer = combineReducers({
   [FEEDS_SLICE_NAME]: feedSliceReducer,
   [USER_SLICE_NAME]: userReducer,
   [ORDER_DETAILS_SLICE_NAME]: orderDetailsReducer
-}); 
+});
 
 const store = configureStore({
   reducer: rootReducer,
