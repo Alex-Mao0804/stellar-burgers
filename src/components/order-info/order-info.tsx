@@ -9,7 +9,6 @@ import { burgerIngredientsSelectors } from '../../slices/burgerIngredientsSlice'
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
-
   const orderData = useSelector((state) =>
     getOrderByNum(state.feeds, Number(number))
   );

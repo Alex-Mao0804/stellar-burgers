@@ -12,8 +12,12 @@ import { Link, useLocation } from 'react-router-dom';
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
   const location = useLocation(); // Получаем текущий путь
   const loginRegProfile = ['/login', '/register', '/profile'];
-  const loginRegProfileActive = loginRegProfile.includes(location.pathname);
-
+  const feedPath = ['/feed'];
+    const isPathActive = (pathArray: string[], currentPath: string) => {
+      return pathArray.some(route => currentPath.startsWith(route));
+    };
+    const loginRegProfileActive = isPathActive(loginRegProfile, location.pathname);
+    const feedActive = isPathActive(feedPath, location.pathname);
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -31,10 +35,10 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
           </Link>
           <Link
             to={'/feed'}
-            className={`${styles.link} ${location.pathname === '/feed' ? styles.link_active : ''}`}
+            className={`${styles.link} ${feedActive ? styles.link_active : ''}`}
           >
             <ListIcon
-              type={location.pathname === '/feed' ? 'primary' : 'secondary'}
+              type={feedActive ? 'primary' : 'secondary'}
             />
             <p className='text text_type_main-default ml-2'>Лента заказов</p>
           </Link>

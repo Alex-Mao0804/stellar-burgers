@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredientsData } from '../../slices/burgerIngredientsSlice';
 import { userSelectors, getUserApiThunk } from '../../slices/userSlice';
+import { fetchFeedsData } from '../../slices/feedSlice';
 
 const App = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchIngredientsData());
     dispatch(getUserApiThunk());
+    dispatch(fetchFeedsData());
+
   }, [dispatch]);
   const location = useLocation();
   const background = location.state?.background;
