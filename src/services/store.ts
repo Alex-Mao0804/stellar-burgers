@@ -9,14 +9,12 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-// import { ordersSliceReducer } from '../slices/ordersSlice';
 
 const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsReducer,
   burgerConstructor: burgerConstructorReducer,
   feeds: feedSliceReducer,
   user: userReducer,
-  // userOrders: ordersSliceReducer,
   orderDetails: orderDetailsReducer
 }); // Заменить на импорт настоящего редьюсера. Например: const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
 

@@ -11,7 +11,7 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
@@ -27,13 +27,14 @@ const App = () => {
     dispatch(fetchIngredientsData());
     dispatch(getUserApiThunk());
   }, [dispatch]);
-
+  const location = useLocation();
+  const background = location.state?.background;
   const user = useSelector(getUserState);
 
   return (
     <div className={styles.app}>
       <AppHeader userName={user.name} />
-      <Routes>
+      <Routes location={background || location}>
         <Route path='*' element={<NotFound404 />} />
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed'>
@@ -96,24 +97,31 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path='orders/:number' element={<OrderInfo />} />
+        </Route>
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+      </Routes>
+
+      {background && (
+        <Routes>
           <Route
-            path='orders/:number'
+            path='/feed/:number'
             element={
               <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
           />
-        </Route>
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-      </Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };
