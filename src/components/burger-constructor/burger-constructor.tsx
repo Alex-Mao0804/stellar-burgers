@@ -2,10 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  clearIngredients,
-  getBurgerConstructor
-} from '../../slices/burgerConstructorSlice';
+import {burgerConstructorSelectors, burgerConstructorActions} from '../../slices/burgerConstructorSlice';
 import {
   getOrderModalData,
   getIsLoading,
@@ -17,7 +14,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = useSelector(getBurgerConstructor);
+  const constructorItems = useSelector(burgerConstructorSelectors.getBurgerConstructor);
   const dispatch = useDispatch();
   const orderRequest = useSelector(getIsLoading);
   const orderModalData = useSelector(getOrderModalData);
@@ -39,7 +36,7 @@ export const BurgerConstructor: FC = () => {
       )
     ];
     dispatch(fetchPostOrder(ingredientsID));
-    dispatch(clearIngredients());
+    dispatch(burgerConstructorActions.clearIngredients());
   };
   const closeOrderModal = () => {
     dispatch(clearOrderDetails());

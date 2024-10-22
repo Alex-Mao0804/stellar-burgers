@@ -3,6 +3,7 @@ import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi, getOrdersApi } from '../utils/burger-api';
 import { clear } from 'console';
 import { clearScreenDown } from 'readline';
+import { ORDER_DETAILS_SLICE_NAME } from './sliceNames';
 
 type TOrderDetailsState = {
   order: TOrder | null;
@@ -23,7 +24,7 @@ const initialState: TOrderDetailsState = {
 };
 
 const orderDetailsSlice = createSlice({
-  name: 'orderDetails',
+  name: ORDER_DETAILS_SLICE_NAME,
   initialState,
   reducers: {
     clearOrderDetails: (state) => (state = initialState)
@@ -77,7 +78,7 @@ export const { clearOrderDetails } = orderDetailsSlice.actions;
 export const orderDetailsReducer = orderDetailsSlice.reducer;
 
 export const fetchPostOrder = createAsyncThunk(
-  'orderDetails/fetchPostOrder',
+  `${ORDER_DETAILS_SLICE_NAME}/fetchPostOrder`,
   async (ingredientsID: string[]) => {
     const data = await orderBurgerApi(ingredientsID);
 
@@ -86,7 +87,7 @@ export const fetchPostOrder = createAsyncThunk(
 );
 
 export const fetchUserOrders = createAsyncThunk(
-  'orderDetails/fetchUserOrders',
+  `${ORDER_DETAILS_SLICE_NAME}/fetchUserOrders`,
   async () => {
     const data = await getOrdersApi();
     return data;

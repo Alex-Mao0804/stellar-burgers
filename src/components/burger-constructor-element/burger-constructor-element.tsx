@@ -3,13 +3,13 @@ import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  getIngredients,
-  onUpdateIngredients
+  burgerConstructorSelectors,
+  burgerConstructorActions
 } from '../../slices/burgerConstructorSlice';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {
-    const ingredients = useSelector(getIngredients);
+    const ingredients = useSelector(burgerConstructorSelectors.getIngredients);
     const dispatch = useDispatch();
 
     const handleMoveDown = () => {
@@ -19,7 +19,7 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
           newIngredients[index + 1],
           newIngredients[index]
         ];
-        dispatch(onUpdateIngredients(newIngredients));
+        dispatch(burgerConstructorActions.onUpdateIngredients(newIngredients));
       }
     };
 
@@ -30,13 +30,13 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
           newIngredients[index],
           newIngredients[index - 1]
         ];
-        dispatch(onUpdateIngredients(newIngredients));
+        dispatch(burgerConstructorActions.onUpdateIngredients(newIngredients));
       }
     };
 
     const handleClose = () => {
       const newIngredients = ingredients.filter((_, idx) => idx !== index);
-      dispatch(onUpdateIngredients(newIngredients));
+      dispatch(burgerConstructorActions.onUpdateIngredients(newIngredients));
     };
 
     return (

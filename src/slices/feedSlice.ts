@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder, TOrdersData } from '@utils-types';
 import { getFeedsApi } from '../utils/burger-api';
 import { get } from 'http';
+import { FEEDS_SLICE_NAME } from '../slices/sliceNames';
 
 type TOrdersDataState = {
   feeds: TOrdersData;
@@ -20,7 +21,7 @@ const initialState: TOrdersDataState = {
 };
 
 const feedSlice = createSlice({
-  name: 'feeds',
+  name: FEEDS_SLICE_NAME,
   initialState,
   reducers: {},
   selectors: {
@@ -52,6 +53,6 @@ export const getOrderByNum = (state: TOrdersDataState, num: number) =>
 export const feedSliceReducer = feedSlice.reducer;
 
 export const fetchFeedsData = createAsyncThunk<TOrdersData>(
-  'feeds/fetchFeedsData',
+  `${FEEDS_SLICE_NAME}/fetchFeedsData`,
   async () => await getFeedsApi()
 );

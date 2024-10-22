@@ -9,14 +9,19 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
+import { BURGER_CONSTRUCTOR_SLICE_NAME,
+  BURGER_INGREDIENTS_SLICE_NAME,
+  FEEDS_SLICE_NAME, ORDER_DETAILS_SLICE_NAME,
+  USER_SLICE_NAME
+ } from '../slices/sliceNames';
 
 const rootReducer = combineReducers({
-  burgerIngredients: burgerIngredientsReducer,
-  burgerConstructor: burgerConstructorReducer,
-  feeds: feedSliceReducer,
-  user: userReducer,
-  orderDetails: orderDetailsReducer
-}); // Заменить на импорт настоящего редьюсера. Например: const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
+  [BURGER_INGREDIENTS_SLICE_NAME]: burgerIngredientsReducer,
+  [BURGER_CONSTRUCTOR_SLICE_NAME]: burgerConstructorReducer,
+  [FEEDS_SLICE_NAME]: feedSliceReducer,
+  [USER_SLICE_NAME]: userReducer,
+  [ORDER_DETAILS_SLICE_NAME]: orderDetailsReducer
+}); 
 
 const store = configureStore({
   reducer: rootReducer,

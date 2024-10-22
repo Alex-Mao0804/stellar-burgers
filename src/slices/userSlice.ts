@@ -12,6 +12,7 @@ import {
 import { get } from 'http';
 import { FC } from 'react';
 import { deleteCookie, setCookie } from '../utils/cookie';
+import { USER_SLICE_NAME } from './sliceNames';
 
 type TUserState = {
   user: TUser;
@@ -33,7 +34,7 @@ const initialState: TUserState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: USER_SLICE_NAME,
   initialState,
   reducers: {
     userLogout: (state) => {
@@ -139,7 +140,7 @@ export const { userLogout } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
 export const loginUser = createAsyncThunk(
-  'user/loginUser',
+  `${USER_SLICE_NAME}/loginUser`,
   async ({ email, password }: Omit<TLoginData, 'name'>) => {
     const data = await loginUserApi({ email, password });
     if (!data?.success) {
@@ -152,7 +153,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const registerUser = createAsyncThunk(
-  'user/registerUser',
+  `${USER_SLICE_NAME}/registerUser`,
   async ({ email, password, name }: TRegisterData) => {
     const data = await registerUserApi({ email, password, name });
     setCookie('accessToken', data.accessToken);
@@ -170,7 +171,7 @@ export const getUserApiThunk = createAsyncThunk('user/getUser', async () => {
 });
 
 export const logoutUser = createAsyncThunk(
-  'user/logoutUser',
+  `${USER_SLICE_NAME}/logoutUser`,
   (_, { dispatch }) => {
     logoutApi()
       .then(() => {
@@ -185,7 +186,7 @@ export const logoutUser = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk(
-  'user/updateUser',
+  `${USER_SLICE_NAME}/updateUser`,
   async (user: Partial<TRegisterData>) => {
     const data = await updateUserApi(user);
     console.log(data);
