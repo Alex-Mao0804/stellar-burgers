@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { TOrder, TOrdersData } from '@utils-types';
+import { RequestStatus, TOrder, TOrdersData } from '@utils-types';
 import { getFeedsApi } from '../utils/burger-api';
 import { get } from 'http';
 import { FEEDS_SLICE_NAME } from '../slices/sliceNames';
 
 type TOrdersDataState = {
   feeds: TOrdersData;
-  loading: boolean;
+  requestStatus: RequestStatus,
   error: string | null;
 };
 
@@ -16,7 +16,7 @@ const initialState: TOrdersDataState = {
     total: 0,
     totalToday: 0
   },
-  loading: false,
+  requestStatus: RequestStatus.Idle,
   error: null
 };
 
@@ -25,23 +25,23 @@ const feedSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    isLoading: (state) => state.loading,
+    isLoading: (state) => state.requestStatus === RequestStatus.Loading,
     getOrders: (state) => state.feeds.orders,
     getFeed: (state) => state.feeds
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFeedsData.pending, (state) => {
-        state.loading = true;
+        state.requestStatus = RequestStatus.Loading;
         state.error = null;
       })
       .addCase(fetchFeedsData.fulfilled, (state, action) => {
-        state.loading = false;
+        state.requestStatus = RequestStatus.Success;
         state.error = null;
         state.feeds = action.payload;
       })
       .addCase(fetchFeedsData.rejected, (state, action) => {
-        state.loading = false;
+        state.requestStatus = RequestStatus.Failed;
         state.error = action.error.message ?? null;
       });
   }

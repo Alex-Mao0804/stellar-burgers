@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import { RequestStatus, TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi, getOrdersApi } from '../utils/burger-api';
 import { clear } from 'console';
 import { clearScreenDown } from 'readline';
@@ -8,8 +8,7 @@ import { ORDER_DETAILS_SLICE_NAME } from './sliceNames';
 type TOrderDetailsState = {
   order: TOrder | null;
   name: string;
-  success: boolean;
-  isLoading: boolean;
+  requestStatus: RequestStatus,
   isError: string;
   userOrders: TOrder[];
 };
@@ -17,8 +16,7 @@ type TOrderDetailsState = {
 const initialState: TOrderDetailsState = {
   order: null,
   name: '',
-  success: false,
-  isLoading: false,
+  requestStatus: RequestStatus.Idle,
   isError: '',
   userOrders: []
 };
@@ -31,41 +29,38 @@ const orderDetailsSlice = createSlice({
   },
   selectors: {
     getOrderModalData: (state) => state.order,
-    getIsLoading: (state) => state.isLoading,
+    getIsLoading: (state) => state.requestStatus === RequestStatus.Loading,
     getUserOrders: (state) => state.userOrders
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostOrder.pending, (state) => {
-        state.isLoading = true;
-        state.success = false;
+        state.requestStatus = RequestStatus.Loading;
         state.isError = '';
       })
       .addCase(fetchPostOrder.rejected, (state, action) => {
-        state.isLoading = false;
-        state.success = false;
+        state.requestStatus = RequestStatus.Failed;
         state.isError = action.error.message ?? '';
       })
       .addCase(fetchPostOrder.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.success = action.payload.success;
+        state.requestStatus = RequestStatus.Success;
         state.name = action.payload.name;
         state.order = action.payload.order;
       })
 
       .addCase(fetchUserOrders.pending, (state) => {
-        state.isLoading = true;
+        state.requestStatus = RequestStatus.Loading;
         state.isError = '';
       })
 
       .addCase(fetchUserOrders.rejected, (state, action) => {
-        state.isLoading = false;
+        state.requestStatus = RequestStatus.Failed;
         state.isError = action.error.message ?? '';
       })
 
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.requestStatus = RequestStatus.Success;
         state.isError = '';
         state.userOrders = action.payload;
       });

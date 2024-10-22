@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { RequestStatus, TIngredient } from '@utils-types';
 import { getIngredientsApi } from '../utils/burger-api';
 import { BURGER_INGREDIENTS_SLICE_NAME } from '../slices/sliceNames';
 
 type TIngredientsState = {
   ingredients: TIngredient[];
-  loading: boolean;
+  requestStatus: RequestStatus,
   error: string | null;
 };
 
 const initialState: TIngredientsState = {
   ingredients: [],
-  loading: false,
+  requestStatus: RequestStatus.Idle,
   error: null
 };
 
@@ -20,22 +20,22 @@ const burgerIngredientsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    loadingIngredients: (state) => state.loading,
+    loadingIngredients: (state) => state.requestStatus === RequestStatus.Loading,
     getIngredients: (state) => state.ingredients
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredientsData.pending, (state) => {
-        state.loading = true;
+        state.requestStatus = RequestStatus.Loading;
         state.error = null;
       })
       .addCase(fetchIngredientsData.fulfilled, (state, action) => {
-        state.loading = false;
+        state.requestStatus = RequestStatus.Success;
         state.ingredients = action.payload;
         state.error = null;
       })
       .addCase(fetchIngredientsData.rejected, (state, action) => {
-        state.loading = false;
+        state.requestStatus = RequestStatus.Failed;
         state.error = action.error.message ?? null;
       });
   }

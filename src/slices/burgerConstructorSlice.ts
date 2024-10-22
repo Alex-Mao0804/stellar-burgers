@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import { RequestStatus, TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi } from '../utils/burger-api';
 import {BURGER_CONSTRUCTOR_SLICE_NAME} from '../slices/sliceNames';
 
@@ -11,12 +11,13 @@ type TBurgerConstructorState = {
     price: number;
   };
   ingredients: TConstructorIngredient[];
-  request?: boolean;
-  error?: string;
+  requestStatus: RequestStatus,
+
 };
 
 const initialState: TBurgerConstructorState = {
-  ingredients: []
+  ingredients: [],
+  requestStatus: RequestStatus.Idle
 };
 
 const burgerConstructorSlice = createSlice({
@@ -47,26 +48,19 @@ const burgerConstructorSlice = createSlice({
   },
   selectors: {
     getBurgerConstructor: (state) => state,
-
     getIngredients: (state) => state.ingredients
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostOrders.pending, (state) => {
-        state.request = true;
-        state.error = '';
+        state.requestStatus = RequestStatus.Loading;
       })
       .addCase(fetchPostOrders.rejected, (state, action) => {
-        state.request = false;
-        state.error = action.error.message ?? '';
+        state.requestStatus = RequestStatus.Failed;
       })
       .addCase(fetchPostOrders.fulfilled, (state, action) => {
-        // state.user = action.payload.user;
-
-        // state.ingredients = action.payload
-        state.request = false;
-        // state.checked = true;
+        state.requestStatus = RequestStatus.Success;
       });
   }
 });
@@ -83,7 +77,6 @@ export const fetchPostOrders = createAsyncThunk(
   async (ingredients: TConstructorIngredient[]) => {
     const id: string[] = ingredients.map((ingredient) => ingredient._id);
     const data = await orderBurgerApi(id);
-    console.log(data);
     return data;
   }
 );

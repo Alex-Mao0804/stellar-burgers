@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { TUser } from '@utils-types';
+import { RequestStatus, TUser } from '@utils-types';
 import {
   loginUserApi,
   TLoginData,
@@ -19,7 +19,7 @@ type TUserState = {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   loginUserError: string;
-  loginUserRequest: boolean;
+  requestStatus: RequestStatus,
 };
 
 const initialState: TUserState = {
@@ -30,7 +30,8 @@ const initialState: TUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   loginUserError: '',
-  loginUserRequest: false
+  requestStatus: RequestStatus.Idle,
+
 };
 
 const userSlice = createSlice({
@@ -44,71 +45,75 @@ const userSlice = createSlice({
   selectors: {
     getUserState: (state) => state.user,
     getError: (state) => state.loginUserError,
-    getIsLoader: (state) => state.loginUserRequest,
+    getIsLoader: (state) => state.requestStatus === RequestStatus.Loading,
     getAuthenticated: (state) => state.isAuthenticated,
     getAuthChecked: (state) => state.isAuthChecked
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.loginUserRequest = true;
+        state.requestStatus = RequestStatus.Loading;
         state.loginUserError = '';
+        state.isAuthChecked = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Failed;
         state.loginUserError = action.error.message ?? '';
         state.isAuthChecked = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Success;
         state.isAuthenticated = true;
         state.isAuthChecked = true;
       })
 
       .addCase(registerUser.pending, (state) => {
-        state.loginUserRequest = true;
+        state.requestStatus = RequestStatus.Loading;
         state.loginUserError = '';
+        state.isAuthChecked = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Failed;
         state.loginUserError = action.error.message ?? '';
         state.isAuthChecked = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Success;
         state.isAuthenticated = true;
         state.isAuthChecked = true;
       })
 
       .addCase(getUserApiThunk.pending, (state) => {
-        state.loginUserRequest = true;
+        state.requestStatus = RequestStatus.Loading;
         state.loginUserError = '';
+        state.isAuthChecked = false;
       })
       .addCase(getUserApiThunk.rejected, (state, action) => {
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Failed;
         // state.loginUserError = action.error.message ?? '';
         state.isAuthChecked = true;
       })
       .addCase(getUserApiThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.loginUserRequest = false;
+        state.requestStatus = RequestStatus.Success;
         state.isAuthenticated = true;
         state.isAuthChecked = true;
       })
 
       .addCase(updateUser.pending, (state) => {
-        state.loginUserRequest = true; //loading
+        state.requestStatus = RequestStatus.Loading;
         state.loginUserError = '';
+        state.isAuthChecked = false;
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.loginUserRequest = false; //loading
+        state.requestStatus = RequestStatus.Failed;
         state.loginUserError = action.error.message ?? '';
         state.isAuthChecked = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.loginUserRequest = false; //loading
+        state.requestStatus = RequestStatus.Success;
         state.isAuthChecked = true;
         state.user = action.payload.user;
         state.isAuthenticated = true;
