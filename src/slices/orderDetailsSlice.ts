@@ -5,7 +5,11 @@ import {
   TIngredient,
   TOrder
 } from '@utils-types';
-import { orderBurgerApi, getOrdersApi } from '../utils/burger-api';
+import {
+  orderBurgerApi,
+  getOrdersApi,
+  getOrderByNumberApi
+} from '../utils/burger-api';
 import { clear } from 'console';
 import { clearScreenDown } from 'readline';
 import { ORDER_DETAILS_SLICE_NAME } from './sliceNames';
@@ -68,6 +72,19 @@ const orderDetailsSlice = createSlice({
         state.requestStatus = RequestStatus.Success;
         state.isError = '';
         state.userOrders = action.payload;
+      })
+
+      .addCase(fetchGetOrderByNumber.pending, (state) => {
+        state.requestStatus = RequestStatus.Loading;
+        state.isError = '';
+      })
+      .addCase(fetchGetOrderByNumber.rejected, (state, action) => {
+        state.requestStatus = RequestStatus.Failed;
+        state.isError = action.error.message ?? '';
+      })
+      .addCase(fetchGetOrderByNumber.fulfilled, (state, action) => {
+        state.requestStatus = RequestStatus.Success;
+        state.order = action.payload.orders[0];
       });
   }
 });
@@ -90,6 +107,14 @@ export const fetchUserOrders = createAsyncThunk(
   `${ORDER_DETAILS_SLICE_NAME}/fetchUserOrders`,
   async () => {
     const data = await getOrdersApi();
+    return data;
+  }
+);
+
+export const fetchGetOrderByNumber = createAsyncThunk(
+  `${ORDER_DETAILS_SLICE_NAME}/fetchGetOrderByNumber`,
+  async (number: number) => {
+    const data = await getOrderByNumberApi(number);
     return data;
   }
 );

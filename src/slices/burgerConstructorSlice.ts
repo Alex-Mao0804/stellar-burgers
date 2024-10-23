@@ -7,6 +7,7 @@ import {
 } from '@utils-types';
 import { orderBurgerApi } from '../utils/burger-api';
 import { BURGER_CONSTRUCTOR_SLICE_NAME } from '../slices/sliceNames';
+import { v4 as uuidv4 } from 'uuid';
 
 type TBurgerConstructorState = {
   bun?: {
@@ -37,7 +38,11 @@ const burgerConstructorSlice = createSlice({
           price: action.payload.price
         };
       } else {
-        state.ingredients.push(action.payload);
+        const ingredientWithId = {
+          ...action.payload,
+          id: uuidv4()
+        };
+        state.ingredients.push(ingredientWithId);
       }
     },
 

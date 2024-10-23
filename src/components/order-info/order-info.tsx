@@ -1,17 +1,39 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
 import { useParams } from 'react-router-dom';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { getOrderByNum, feedSliceSelectors } from '../../slices/feedSlice';
 import { burgerIngredientsSelectors } from '../../slices/burgerIngredientsSlice';
+import {
+  orderDetailsSelectors,
+  fetchGetOrderByNumber,
+  orderDetailsActions
+} from '../../slices/orderDetailsSlice';
 
 export const OrderInfo: FC = () => {
   const { id: number } = useParams();
-  const orderData = useSelector((state) =>
-    getOrderByNum(state.feeds, Number(number))
-  );
+  const orderData = useSelector((state) => {
+    if (getOrderByNum(state.feeds, Number(number))) {
+      return getOrderByNum(state.feeds, Number(number));
+    }
+    if (orderDetailsSelectors.getOrderModalData(state)) {
+      return orderDetailsSelectors.getOrderModalData(state);
+    }
+    return null;
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!orderData) {
+      dispatch(fetchGetOrderByNumber(Number(number)));
+    }
+    return () => {
+      dispatch(orderDetailsActions.clearOrderDetails());
+    };
+  }, [dispatch]);
 
   const ingredients: TIngredient[] = useSelector(
     burgerIngredientsSelectors.getIngredients

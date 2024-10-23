@@ -11,7 +11,13 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useMatch
+} from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
@@ -27,12 +33,13 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchIngredientsData());
     dispatch(getUserApiThunk());
-    dispatch(fetchFeedsData());
   }, [dispatch]);
   const location = useLocation();
   const background = location.state?.background;
   const user = useSelector(userSelectors.getUserState);
-
+  const profileMatch = useMatch('/profile/orders/:id')?.params.id;
+  const feedMatch = useMatch('/feed/:id')?.params.id;
+  const orderNumber = profileMatch || feedMatch;
   return (
     <div className={styles.app}>
       <AppHeader userName={user.name} />
@@ -91,24 +98,67 @@ const App = () => {
             }
           />
         </Route>
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_main-large ${styles.detailHeader} `}
+              >
+                Детали ингредиента
+              </p>
+              <IngredientDetails />
+            </div>
+          }
+        />
+        <Route
+          path='/profile/orders/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_main-large ${styles.detailHeader} `}
+              >
+                {'Детали заказа №' + orderNumber}
+              </p>
+              <ProtectedRoute>
+                <OrderInfo />
+              </ProtectedRoute>
+            </div>
+          }
+        />
+        <Route
+          path='/feed/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_main-large ${styles.detailHeader} `}
+              >
+                {'Детали заказа №' + orderNumber}
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
       </Routes>
 
       {background && (
         <Routes>
-          <Route
+          {/* <Route
             path='/feed/:id'
             element={
-              <Modal title={'Заказ'} onClose={() => navigate(-1)}>
+              <Modal title={'Заказ №'+ orderNumber} onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
-          />
+          /> */}
           <Route
             path='/profile/orders/:id'
             element={
               <ProtectedRoute>
-                <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+                <Modal
+                  title={'Детали заказа №' + orderNumber}
+                  onClose={() => navigate(-1)}
+                >
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
@@ -117,7 +167,10 @@ const App = () => {
           <Route
             path='/feed/:id'
             element={
-              <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+              <Modal
+                title={'Детали заказа №' + orderNumber}
+                onClose={() => navigate(-1)}
+              >
                 <OrderInfo />
               </Modal>
             }
