@@ -20,6 +20,10 @@
   color: var(--text-inactive-color);
 }
 
+.link:hover {
+  color: var(--text-primary-color);
+}
+
 .link_active {
   color: var(--text-primary-color);
 }
