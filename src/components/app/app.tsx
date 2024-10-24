@@ -143,14 +143,6 @@ const App = () => {
 
       {background && (
         <Routes>
-          {/* <Route
-            path='/feed/:id'
-            element={
-              <Modal title={'Заказ №'+ orderNumber} onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
-            }
-          /> */}
           <Route
             path='/profile/orders/:id'
             element={

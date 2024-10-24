@@ -31,7 +31,7 @@ export const OrderInfo: FC = () => {
       dispatch(fetchGetOrderByNumber(Number(number)));
     }
     return () => {
-      dispatch(orderDetailsActions.clearOrderDetails());
+      dispatch(orderDetailsActions.clearOrderModalData());
     };
   }, [dispatch]);
 

@@ -34,7 +34,10 @@ const orderDetailsSlice = createSlice({
   name: ORDER_DETAILS_SLICE_NAME,
   initialState,
   reducers: {
-    clearOrderDetails: (state) => (state = initialState)
+    clearOrderDetails: (state) => (state = initialState),
+    clearOrderModalData: (state) => {
+      state.order = null;
+    }
   },
   selectors: {
     getOrderModalData: (state) => state.order,
