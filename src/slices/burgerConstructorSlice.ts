@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   RequestStatus,
-  TConstructorIngredient,
-  TIngredient,
-  TOrder
+  TConstructorIngredient
 } from '@utils-types';
 import { orderBurgerApi } from '../utils/burger-api';
 import { BURGER_CONSTRUCTOR_SLICE_NAME } from '../slices/sliceNames';
