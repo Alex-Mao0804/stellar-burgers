@@ -1,18 +1,25 @@
-import RootState from '../services/store';
+import { rootReducer } from '../services/store';
+import {
+  BURGER_CONSTRUCTOR_SLICE_NAME,
+  BURGER_INGREDIENTS_SLICE_NAME,
+  FEEDS_SLICE_NAME,
+  ORDER_DETAILS_SLICE_NAME,
+  USER_SLICE_NAME
+} from '../slices/sliceNames';
 
 describe('Проверяем правильную инициализацию rootReducer', () => {
   it('должен вернуть начальное состояние', () => {
     const initialState = {
-      burgerConstructor: {
-        ingredients: [],
-        requestStatus: 'Idle'
-      },
-      burgerIngredients: {
+      [BURGER_INGREDIENTS_SLICE_NAME]: {
         error: null,
         ingredients: [],
         requestStatus: 'Idle'
       },
-      feeds: {
+      [BURGER_CONSTRUCTOR_SLICE_NAME]: {
+        ingredients: [],
+        requestStatus: 'Idle'
+      },
+      [FEEDS_SLICE_NAME]: {
         error: null,
         feeds: {
           orders: [],
@@ -21,14 +28,14 @@ describe('Проверяем правильную инициализацию roo
         },
         requestStatus: 'Idle'
       },
-      orderDetails: {
+      [ORDER_DETAILS_SLICE_NAME]: {
         isError: '',
         name: '',
         order: null,
         requestStatus: 'Idle',
         userOrders: []
       },
-      user: {
+      [USER_SLICE_NAME]: {
         isAuthChecked: false,
         isAuthenticated: false,
         loginUserError: '',
@@ -40,7 +47,7 @@ describe('Проверяем правильную инициализацию roo
       }
     };
 
-    const state = RootState.getState();
+    const state = rootReducer(undefined, { type: 'UNKNOWN_ACTION' });
     expect(state).toEqual(initialState);
   });
 });

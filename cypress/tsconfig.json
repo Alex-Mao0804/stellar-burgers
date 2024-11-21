@@ -10,5 +10,5 @@
   "include": [
     "../node_modules/cypress",
     "./**/*.ts"
-, "e2e/Modal/burgerConstructor/constructor.cy.tsx"  ]
+, "e2e/constructor.cy.tsx"  ]
 } 
