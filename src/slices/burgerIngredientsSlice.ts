@@ -48,8 +48,6 @@ export const getIngredientById = (state: TIngredientsState, id: string) =>
 export const burgerIngredientsReducer = burgerIngredientsSlice.reducer;
 export default burgerIngredientsSlice;
 
-
-
 export const fetchIngredientsData = createAsyncThunk<TIngredient[]>(
   `${BURGER_INGREDIENTS_SLICE_NAME}/fetchIngredientsData`,
   async () => await getIngredientsApi()

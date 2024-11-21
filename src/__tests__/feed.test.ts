@@ -1,6 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { feedSliceReducer, fetchFeedsData } from '../slices/feedSlice';
-import { RequestStatus } from '@utils-types';
+import {
+  feedSliceReducer,
+  fetchFeedsData,
+  getOrderByNum
+} from '../slices/feedSlice';
+import { RequestStatus, TOrdersData } from '@utils-types';
 import { getFeedsApi } from '../utils/burger-api'; // Оставляем импорт здесь
 
 // Мокируем getFeedsApi в правильном виде
@@ -30,8 +34,7 @@ describe('Проверяет редьюсер feed', () => {
     const stateBefore = store.getState().feed; // Получаем текущее состояние
     expect(stateBefore.requestStatus).toBe(RequestStatus.Loading); // Ожидаем что статус запроса - loading
   });
-
-  test('Проверим состояние запроса после успешной загрузки заказов', async () => {
+  describe('Проверяем состояние после успешной загрузки заказов', () => {
     // Заглушка для успешного ответа
     (getFeedsApi as jest.Mock).mockResolvedValue({
       orders: [
@@ -64,15 +67,24 @@ describe('Проверяет редьюсер feed', () => {
         }
       ]
     });
+    test('Проверим состояние запроса после успешной загрузки заказов', async () => {
+      await store.dispatch(fetchFeedsData());
 
-    await store.dispatch(fetchFeedsData());
+      const state = store.getState().feed;
 
-    const state = store.getState().feed;
+      // Проверяем состояние после успешной загрузки
+      expect(state.requestStatus).toBe(RequestStatus.Success);
+      expect(state.error).toBeNull();
+      expect(state.feeds.orders).toHaveLength(2); // Проверяем наличие заказов
+    });
+    test('Проверим получение заказа по номеру', async () => {
+      await store.dispatch(fetchFeedsData());
 
-    // Проверяем состояние после успешной загрузки
-    expect(state.requestStatus).toBe(RequestStatus.Success);
-    expect(state.error).toBeNull();
-    expect(state.feeds.orders).toHaveLength(2); // Проверяем наличие заказов
+      const state = store.getState().feed;
+      const orderData = getOrderByNum(state, Number('58586'));
+
+      expect(orderData).not.toBeNull();
+    });
   });
 
   test('Проверим состояние запроса при ошибке загрузки заказов', async () => {

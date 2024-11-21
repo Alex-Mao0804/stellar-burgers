@@ -2,7 +2,12 @@ import { RequestStatus } from '@utils-types';
 import burgerConstructorSlice from '../slices/burgerConstructorSlice';
 
 const { actions } = burgerConstructorSlice;
-const { addIngredient, onUpdateIngredients } = actions;
+const {
+  addIngredient,
+  onUpdateIngredients,
+  removeFromConstructor,
+  reorderConstructor
+} = actions;
 
 describe('Проверяет редюсер слайса burgerConstructor', () => {
   const initialState = {
@@ -13,6 +18,7 @@ describe('Проверяет редюсер слайса burgerConstructor', () 
 
   const ingredients = [
     {
+      id: '643d69a5c3f7b9001cfa093c',
       _id: '643d69a5c3f7b9001cfa093c',
       name: 'Краторная булка N-200i',
       type: 'bun',
@@ -27,6 +33,7 @@ describe('Проверяет редюсер слайса burgerConstructor', () 
       __v: 0
     },
     {
+      id: '643d69a5c3f7b9001cfa0941',
       _id: '643d69a5c3f7b9001cfa0941',
       name: 'Биокотлета из марсианской Магнолии',
       type: 'main',
@@ -77,12 +84,28 @@ describe('Проверяет редюсер слайса burgerConstructor', () 
   it('должен обработать экшен удаления ингредиентов', () => {
     const initialState = {
       bun: ingredients[0],
-      ingredients: [Object.assign({id: ingredients[1]._id}, ingredients[1])],
+      ingredients: [ingredients[1]],
       requestStatus: RequestStatus.Idle
-    }
-    const newIngredients = initialState.ingredients.filter((_, idx) => idx !== 0);
-    const newState = burgerConstructorSlice.reducer(initialState, onUpdateIngredients(newIngredients));
-  
+    };
+    const newState = burgerConstructorSlice.reducer(
+      initialState,
+      removeFromConstructor(0)
+    );
     expect(newState.ingredients).toHaveLength(0);
+  });
+
+  it('должен поменять ингредиент местами', () => {
+    const ingredient1 = ingredients[0];
+    const ingredient2 = ingredients[1];
+    const initialState = {
+      bun: ingredients[0],
+      ingredients: [ingredient1, ingredient2],
+      requestStatus: RequestStatus.Idle
+    };
+    const newState = burgerConstructorSlice.reducer(
+      initialState,
+      reorderConstructor({ from: 0, to: 1 })
+    );
+    expect(newState.ingredients).toEqual([ingredient2, ingredient1]);
   });
 });

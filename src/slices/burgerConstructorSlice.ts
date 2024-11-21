@@ -1,8 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  RequestStatus,
-  TConstructorIngredient
-} from '@utils-types';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RequestStatus, TConstructorIngredient } from '@utils-types';
 import { orderBurgerApi } from '../utils/burger-api';
 import { BURGER_CONSTRUCTOR_SLICE_NAME } from '../slices/sliceNames';
 import { v4 as uuidv4 } from 'uuid';
@@ -51,6 +48,20 @@ const burgerConstructorSlice = createSlice({
 
     onUpdateIngredients(state, action) {
       state.ingredients = action.payload;
+    },
+
+    reorderConstructor(
+      state,
+      { payload }: PayloadAction<{ from: number; to: number }>
+    ) {
+      const { from, to } = payload;
+      const ingredients = [...state.ingredients];
+      ingredients.splice(to, 0, ingredients.splice(from, 1)[0]);
+      state.ingredients = ingredients;
+    },
+
+    removeFromConstructor(state, { payload }: PayloadAction<number>) {
+      state.ingredients = state.ingredients.filter((_, idx) => idx !== payload);
     }
   },
   selectors: {
