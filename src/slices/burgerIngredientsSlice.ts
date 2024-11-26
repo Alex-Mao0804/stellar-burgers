@@ -46,6 +46,7 @@ export const burgerIngredientsSelectors = burgerIngredientsSlice.selectors;
 export const getIngredientById = (state: TIngredientsState, id: string) =>
   state.ingredients.find((ingredient) => ingredient._id === id);
 export const burgerIngredientsReducer = burgerIngredientsSlice.reducer;
+export default burgerIngredientsSlice;
 
 export const fetchIngredientsData = createAsyncThunk<TIngredient[]>(
   `${BURGER_INGREDIENTS_SLICE_NAME}/fetchIngredientsData`,

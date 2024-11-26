@@ -9,8 +9,6 @@ import {
   logoutApi,
   updateUserApi
 } from '../utils/burger-api';
-import { get } from 'http';
-import { FC } from 'react';
 import { deleteCookie, setCookie } from '../utils/cookie';
 import { USER_SLICE_NAME } from './sliceNames';
 
